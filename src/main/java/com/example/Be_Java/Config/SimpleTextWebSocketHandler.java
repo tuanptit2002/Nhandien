@@ -46,6 +46,15 @@ public class SimpleTextWebSocketHandler extends TextWebSocketHandler {
                     Vehicle vehicleSaved = vehicleService.checkoutParking(licensePlate).getData();
                     if (vehicleSaved != null) {
                         String vehicle_id = String.valueOf(vehicleSaved.getId());
+                        Parking parkingNew = parkingService.getByVehicle_id(vehicle_id).getData();
+                        if(vehicleSaved.getVehicle_type().equals("Bus")){
+                            Long number_location_bus = parkingNew.getNumber_location_bus();
+                            parkingNew.setNumber_location_bus(number_location_bus + 1);
+                        }else{
+                            Long number_location_moto = parkingNew.getNumber_location_moto();
+                            parkingNew.setNumber_location_moto(number_location_moto + 1);
+                        }
+                        parkingService.create(parkingNew);
                         Time time = timeService.getByVehicle(vehicle_id).getData();
                         LocalDateTime currentDateTime = LocalDateTime.now();
                         time.setTime_out(currentDateTime);
@@ -77,9 +86,18 @@ public class SimpleTextWebSocketHandler extends TextWebSocketHandler {
 
     private void checkIn(String type_vehicle, String licensePlate, String parking){
         Vehicle vehicle = new Vehicle();
+
         vehicle.setVehicle_type(type_vehicle);
         vehicle.setLicense_plate(licensePlate);
         Parking parkingData = parkingService.getById(parking).getData();
+        if(type_vehicle.equals("Bus")){
+           Long numberBusNew = parkingData.getNumber_location_bus();
+           parkingData.setNumber_location_bus(numberBusNew-1);
+        } else  {
+            Long numberMotoNew = parkingData.getNumber_location_moto();
+            parkingData.setNumber_location_moto(numberMotoNew-1);
+        }
+        parkingService.create(parkingData);
         vehicle.setParking(parkingData);
         LocalDateTime currentDateTime = LocalDateTime.now();
         Time time = new Time();

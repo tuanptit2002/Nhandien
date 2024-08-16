@@ -14,6 +14,8 @@ public class Parking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private Long total;
+    private Long number_location_moto;
+    private Long number_location_bus;
     private String name;
 
     @OneToMany(mappedBy = "parking")
