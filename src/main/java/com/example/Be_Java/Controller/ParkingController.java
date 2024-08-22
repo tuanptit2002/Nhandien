@@ -1,5 +1,6 @@
 package com.example.Be_Java.Controller;
 
+import com.example.Be_Java.Dto.ParkingDto;
 import com.example.Be_Java.Dto.ResponseBodyDto;
 import com.example.Be_Java.Entity.Parking;
 import com.example.Be_Java.Service.ParkingService;
@@ -18,7 +19,12 @@ public class ParkingController {
 
 
     @PostMapping("/create")
-    public ResponseBodyDto<Parking> create(@RequestBody Parking parking){
+    public ResponseBodyDto<Parking> create(@RequestBody ParkingDto parkingDto){
+        Parking parking = new Parking();
+        parking.setTotal(parkingDto.getTotal());
+        parking.setName(parkingDto.getName());
+        parking.setNumber_location_moto(parkingDto.getNumber_location_moto());
+        parking.setNumber_location_bus(parkingDto.getNumber_location_bus());
         return parkingService.create(parking);
     }
 
