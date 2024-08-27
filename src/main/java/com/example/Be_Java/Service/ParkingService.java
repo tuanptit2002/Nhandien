@@ -5,6 +5,8 @@ import com.example.Be_Java.Dto.ResponseBodyDto;
 import com.example.Be_Java.Entity.Parking;
 import com.example.Be_Java.Repository.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -35,5 +37,10 @@ public class ParkingService {
     public ResponseBodyDto<Parking> getByVehicle_id(String vehicle_id){
         Parking parking = parkingRepository.getByIdVehicle(UUID.fromString(vehicle_id));
         return new ResponseBodyDto<>(parking, "OK","200");
+    }
+
+    public ResponseBodyDto<Page<Parking>> getParkingPage(Pageable pageable){
+        Page<Parking> parkingPage =  parkingRepository.getParkingPage(pageable);
+        return new ResponseBodyDto<>(parkingPage, "OK","200", parkingPage.getTotalPages(), parkingPage.getTotalElements() );
     }
 }

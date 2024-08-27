@@ -1,5 +1,6 @@
 package com.example.Be_Java.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class Parking {
     private Long number_location_bus;
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parking")
     private List<Vehicle> vehicles;
 }
